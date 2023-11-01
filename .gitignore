@@ -1,0 +1,7 @@
+.DS_Store
+.vscode
+__pycache__/
+/database
+/logs
+/webdriver
+celerybeat-schedule
