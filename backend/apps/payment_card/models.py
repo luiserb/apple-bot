@@ -3,8 +3,8 @@ from django.db import models
 
 class PaymentCard(models.Model):
     number = models.BigIntegerField(verbose_name='Número de tarjeta', unique=True)
-    expiration = models.IntegerField(verbose_name='Expiración')
-    cvv = models.IntegerField(verbose_name='CVV')
+    expiration = models.CharField(verbose_name='Expiración', max_length=5)
+    cvv = models.CharField(verbose_name='CVV', max_length=4)
     status = models.BooleanField(default=True)
     date_add = models.DateTimeField(auto_now_add=True)
 

@@ -10,6 +10,8 @@ class Buyer(models.Model):
     email = models.EmailField(verbose_name='Correo')
     zip_code = models.CharField(verbose_name='Código postal', max_length=180)
     street_address = models.TextField(verbose_name='Dirección de su ubicación')
+    delivery = models.BooleanField(default=True, verbose_name='Delivery')
+    payment_card_status = models.BooleanField(default=True, verbose_name='Pago por tarjeta Visa')
     gift_card = models.ForeignKey(to=GiftCard, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Tarjeta de regalo')
     payment_card = models.ForeignKey(to=PaymentCard, on_delete=models.CASCADE, verbose_name='Método de pago', blank=True, null=True)
     active = models.BooleanField(verbose_name='Activo', default=True)
