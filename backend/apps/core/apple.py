@@ -69,6 +69,8 @@ class AppleBot:
     def _get_browser(self) -> WebDriver:
         service:Service = Service(executable_path=self.executable_path)
         options:ChromeOptions = ChromeOptions()
+        options.headless=True
+        options.add_argument('--headless')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--disable-blink-features=AutomationControlled")
