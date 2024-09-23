@@ -11,7 +11,10 @@ def apple_bot():
     buyers = Buyer.objects.filter(active=True)
     if buyers.count() >= 1:
         for buyer in buyers:
-            AppleBot(buyer=buyer)
+            try:
+                AppleBot(buyer=buyer)
+            except Exception as error:
+                print('Error en compra del usuario {} : {}'.format(buyer.id, error))
 
 
 app.conf.beat_schedule = {

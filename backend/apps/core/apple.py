@@ -188,19 +188,25 @@ class AppleBot:
         if self.buyer.delivery:
             delivery_option:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[2]/div/div[1]/div[1]/fieldset/fieldset/div/div[1]/button')))
             delivery_option.click()
-            input_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.deliveryTab.delivery.deliveryLocation.address.postalCode"]')))
-            input_zip_code.send_keys(self.buyer.zip_code)
-            search_zip_code_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.deliveryTab.delivery.deliveryLocation.address.calculate"]')))
-            search_zip_code_button.click()
+            try:
+                input_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.deliveryTab.delivery.deliveryLocation.address.postalCode"]')))
+                input_zip_code.send_keys(self.buyer.zip_code)
+                search_zip_code_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.deliveryTab.delivery.deliveryLocation.address.calculate"]')))
+                search_zip_code_button.click()
+            except Exception as error:
+                logging.error('Error ingresando el zip code: {}'.format(error))
         else:
             pickup_store_option:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[2]/div/div[1]/div[1]/fieldset/fieldset/div/div[2]/button')))
             pickup_store_option.click()
-            time.sleep(5)
-            input_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.pickupTab.pickup.storeLocator.searchInput"]')))
-            input_zip_code.send_keys(self.buyer.zip_code)
-            time.sleep(2)
-            search_zip_code_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.pickupTab.pickup.storeLocator.search"]')))
-            search_zip_code_button.click()
+            try:
+                time.sleep(5)
+                input_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.pickupTab.pickup.storeLocator.searchInput"]')))
+                input_zip_code.send_keys(self.buyer.zip_code)
+                time.sleep(2)
+                search_zip_code_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.pickupTab.pickup.storeLocator.search"]')))
+                search_zip_code_button.click()
+            except Exception as error:
+                logging.error('Error ingresando el zip code: {}'.format(error))
     
 
     def select_pickup_store(self) -> bool:
