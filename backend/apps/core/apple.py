@@ -35,8 +35,11 @@ logger.addHandler(file_handler)
 
 
 class AppleBot:
-    def __init__(self, buyer:Buyer):
-        self.buyer = buyer
+    def __init__(
+                    self, 
+                    buyer:Buyer,
+                ):
+        self.buyer:Buyer = buyer
         self.url:str = 'https://www.apple.com/shop/buy-iphone/iphone-16-pro'
         self.executable_path:str = settings.WEBDRIVER
         self.select_memory:int = settings.IPHONE_MEMORY
@@ -69,8 +72,6 @@ class AppleBot:
     def _get_browser(self) -> WebDriver:
         service:Service = Service(executable_path=self.executable_path)
         options:ChromeOptions = ChromeOptions()
-        options.headless=True
-        options.add_argument('--headless')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--disable-blink-features=AutomationControlled")
@@ -161,11 +162,21 @@ class AppleBot:
 
         button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[3]/div[3]/div[10]/div/div/div/div/div/div[3]/div/div/div/div[2]/div/div/span/form/div/span/button')))
         button.click()
-        #button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div[3]/div[3]/div[8]/div/div/div/div/div/div[3]/div/div/div/div[2]/div/div/span/form/div/span/button')))
-        #button.click()
         
         review_bag_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[2]/div/div[2]/div/form/button')))
         review_bag_button.click()
+
+        if self.buyer.double_buy:
+            try:
+                logging.info('Programando doble pedido')
+                select_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="bag-content"]/ol/li/div/div[2]/div[1]/div[2]/div/div/div')))
+                select_button.click()
+                select = Select(self.browser.find_element(By.XPATH, '/html/body/div[2]/div[2]/div/div[1]/ol/li/div/div[2]/div[1]/div[2]/div/div/div/select[1]'))
+                all_options = self.browser.find_elements(By.TAG_NAME, 'option')
+                if len(all_options) >= 2:
+                    select.select_by_index(1)
+            except Exception as error:
+                logging.error('Error al programar doble pedido: {}'.format(error))
         check_out_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="shoppingCart.actions.checkout"]')))
         check_out_button.click()
     
@@ -173,7 +184,7 @@ class AppleBot:
     def checkout(self) -> None:
         continue_as_guest_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="signIn.guestLogin.guestLogin"]')))
         continue_as_guest_button.click()
-        time.sleep(2)
+        time.sleep(5)
         if self.buyer.delivery:
             delivery_option:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[2]/div/div[1]/div[1]/fieldset/fieldset/div/div[1]/button')))
             delivery_option.click()
@@ -184,6 +195,7 @@ class AppleBot:
         else:
             pickup_store_option:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[2]/div/div[1]/div[1]/fieldset/fieldset/div/div[2]/button')))
             pickup_store_option.click()
+            time.sleep(5)
             input_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.pickupTab.pickup.storeLocator.searchInput"]')))
             input_zip_code.send_keys(self.buyer.zip_code)
             time.sleep(2)

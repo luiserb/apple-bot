@@ -12,6 +12,7 @@ class Buyer(models.Model):
     street_address = models.TextField(verbose_name='Dirección de su ubicación')
     delivery = models.BooleanField(default=True, verbose_name='Delivery')
     payment_card_status = models.BooleanField(default=True, verbose_name='Pago por tarjeta Visa')
+    double_buy = models.BooleanField(default=False, verbose_name='Doble compra de Iphone')
     gift_card = models.ForeignKey(to=GiftCard, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Tarjeta de regalo')
     payment_card = models.ForeignKey(to=PaymentCard, on_delete=models.CASCADE, verbose_name='Método de pago', blank=True, null=True)
     active = models.BooleanField(verbose_name='Activo', default=True)

@@ -17,7 +17,7 @@ def apple_bot():
 app.conf.beat_schedule = {
     'apple_bot': {
         'task': 'backend.apps.core.tasks.apple_bot',
-        'schedule': crontab(minute='*/5'),
+        'schedule': crontab(minute='*/3'),
         'args': (),
     }
 }
