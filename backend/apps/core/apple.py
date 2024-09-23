@@ -189,6 +189,11 @@ class AppleBot:
             delivery_option:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[2]/div/div[1]/div[1]/fieldset/fieldset/div/div[1]/button')))
             delivery_option.click()
             try:
+                with suppress(Exception):
+                    button_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[3]/div/div[1]/div[2]/div/div[1]/button')))
+                    button_zip_code.click()
+
+                time.sleep(5)
                 input_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.deliveryTab.delivery.deliveryLocation.address.postalCode"]')))
                 input_zip_code.send_keys(self.buyer.zip_code)
                 search_zip_code_button:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.deliveryTab.delivery.deliveryLocation.address.calculate"]')))
@@ -199,6 +204,10 @@ class AppleBot:
             pickup_store_option:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[2]/div/div[1]/div[1]/fieldset/fieldset/div/div[2]/button')))
             pickup_store_option.click()
             try:
+                with suppress(Exception):
+                    button_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout-container"]/div[1]/div[3]/div/div[1]/div[2]/div/div[1]/button')))
+                    button_zip_code.click()
+
                 time.sleep(5)
                 input_zip_code:WebElement = WebDriverWait(self.browser, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="checkout.fulfillment.pickupTab.pickup.storeLocator.searchInput"]')))
                 input_zip_code.send_keys(self.buyer.zip_code)
